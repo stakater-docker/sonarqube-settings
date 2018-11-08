@@ -27,6 +27,7 @@ curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/users/change_password?lo
 
 # Post settings 
 if [ -f ${SETTINGS_PROPERTIES_PATH} ];
+then
     echo "Posting settings from properties file to SonarQube on ${SONARQUBE_URL}"
     IFS=$'\r\n' GLOBIGNORE='*' command eval  'props=($(cat ${SETTINGS_PROPERTIES_PATH}))'
     for (( i=0; i<${#props[@]}; i++ ))
