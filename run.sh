@@ -10,7 +10,7 @@ SETTINGS_PROPERTIES_PATH=${SETTINGS_PROPERTIES_PATH:-"${HOME}/settings/settings.
 
 # Wait for SONARQUBE to start up
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL}/api/server/version"); do
-    sleep 1;
+    sleep 3;
     retries=$(($retries-1))
     
     if [[ ${retries} -eq 0 ]]; 

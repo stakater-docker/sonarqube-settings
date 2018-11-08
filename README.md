@@ -16,7 +16,7 @@ Alternatively you can mount the directory having properties file with any name o
 
 `SONARQUBE_URL`: URL of SonarQube (default: `http://localhost:9000`)
 
-`RETRY_LIMIT`: Number of tries to connect to SonarQube before failing (default: `10`)
+`RETRY_LIMIT`: Number of tries, with a 3 second interval, to connect to SonarQube before failing (default: `20`)
 
 `ADMIN_PASSWORD`: New password for SonarQube `admin` user (default: `admin`)
 
