@@ -38,3 +38,5 @@ if [ -f ${SETTINGS_PROPERTIES_PATH} ];
         # curl -v -XPOST --user admin:${ADMIN_PASSWORD} "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
     done
 fi
+
+sleep infinity
