@@ -23,3 +23,9 @@ Alternatively you can mount the directory having properties file with any name o
 `SETTINGS_PROPERTIES_PATH`: Path to the settings properties file from which properties are read and posted to sonarqube  (default: `${HOME}/settings/settings.properties`)
 
 
+## Example sonar.properties file
+
+```
+sonar.core.baseUrl=https://sonarqube.org
+sonar.someProperty=someValue
+```
