@@ -24,7 +24,7 @@ done
 echo "Sonarqube running at ${SONARQUBE_URL}"
 
 # Authenticate admin
-curl -XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
+curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
 
 # Update admin password
 echo "Updating Admin Password for SonarQube"
