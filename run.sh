@@ -10,6 +10,7 @@ SETTINGS_PROPERTIES_PATH=${SETTINGS_PROPERTIES_PATH:-"${HOME}/settings/settings.
 
 # Wait for SONARQUBE to start up
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL}/api/server/version"); do
+    echo "Waiting for SonarQube to startup ..."
     sleep 3;
     retries=$(($retries-1))
     
@@ -21,6 +22,8 @@ until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL
 done
 
 echo "Sonarqube running at ${SONARQUBE_URL}"
+curl -v XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
+
 # Update admin password
 echo "Updating Admin Password for SonarQube"
 curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}"
