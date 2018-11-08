@@ -10,7 +10,7 @@ SETTINGS_PROPERTIES_PATH=${SETTINGS_PROPERTIES_PATH:-"${HOME}/settings/settings.
 
 # Wait for SONARQUBE to start up
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head ${SONARQUBE_URL}); do
-    sleep 0.1;
+    sleep 1;
     retries=$(($retries-1))
     
     if [[ ${retries} -eq 0 ]]; 
@@ -20,7 +20,7 @@ until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head ${SONARQUBE_URL}
     fi
 done
 
-
+echo "Sonarqube running at ${SONARQUBE_URL}"
 # Update admin password
 echo "Updating Admin Password for SonarQube"
 curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}"
@@ -35,9 +35,9 @@ then
         IFS='=' read -ra keyValue <<< "${props[$i]}"
         key=${keyValue[0]}
         value=${keyValue[1]}
-        echo "curl -XPOST --user admin:${ADMIN_PASSWORD} \"${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}\""
-        # curl -v -XPOST --user admin:${ADMIN_PASSWORD} "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
+        curl -v -XPOST --user admin:${ADMIN_PASSWORD} "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
     done
 fi
 
+echo "Sleeping till Inifinity"
 sleep infinity
