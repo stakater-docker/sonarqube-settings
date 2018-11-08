@@ -26,6 +26,6 @@ Alternatively you can mount the directory having properties file with any name o
 ## Example sonar.properties file
 
 ```
-sonar.core.baseUrl=https://sonarqube.org
+sonar.core.serverBaseUrl=https://sonarqube.org
 sonar.someProperty=someValue
 ```
