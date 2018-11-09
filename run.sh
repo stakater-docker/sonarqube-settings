@@ -26,8 +26,10 @@ sleep 10s
 
 # Update admin password
 echo "Updating Admin Password for SonarQube"
-curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:admin  \
-    "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}"
+pw_status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:admin  \
+    "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}")
+
+echo "Response Status: ${pw_status}\n"
 
 # Post settings 
 if [ -f ${SETTINGS_PROPERTIES_PATH} ];
@@ -39,8 +41,9 @@ then
         IFS='=' read -ra keyValue <<< "${props[$i]}"
         key=${keyValue[0]}
         value=${keyValue[1]}
-        curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:${ADMIN_PASSWORD} \
-            "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
+        status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:${ADMIN_PASSWORD} \
+            "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}")
+        echo "Response Status: ${status}"
     done
 fi
 
