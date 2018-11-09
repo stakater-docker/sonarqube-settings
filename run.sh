@@ -48,5 +48,5 @@ then
     done
 fi
 
-echo "Sleeping till Inifinity"
+echo "Sleeping for Inifinity"
 sleep infinity
