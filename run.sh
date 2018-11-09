@@ -7,7 +7,6 @@ retries=${RETRY_LIMIT:-10};
 SONARQUBE_URL=${SONARQUBE_URL:-http://localhost:9000}
 SETTINGS_PROPERTIES_PATH=${SETTINGS_PROPERTIES_PATH:-"${HOME}/settings/settings.properties"}
 
-
 # Wait for SONARQUBE to start up
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL}/api/server/version"); do
     echo "Waiting for SonarQube to startup ..."
@@ -22,13 +21,13 @@ until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL
 done
 
 echo "Sonarqube running at ${SONARQUBE_URL}"
+echo "Waiting for 10 seconds ..."
 sleep 10s
-# Authenticate admin
-#curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
 
 # Update admin password
 echo "Updating Admin Password for SonarQube"
-curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}"
+curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:admin  \
+    "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}"
 
 # Post settings 
 if [ -f ${SETTINGS_PROPERTIES_PATH} ];
@@ -40,7 +39,8 @@ then
         IFS='=' read -ra keyValue <<< "${props[$i]}"
         key=${keyValue[0]}
         value=${keyValue[1]}
-        curl -v -XPOST --user admin:${ADMIN_PASSWORD} "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
+        curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:${ADMIN_PASSWORD} \
+            "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}"
     done
 fi
 
