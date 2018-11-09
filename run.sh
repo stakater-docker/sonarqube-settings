@@ -22,9 +22,8 @@ until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL
 done
 
 echo "Sonarqube running at ${SONARQUBE_URL}"
-
 # Authenticate admin
-curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
+#curl -v -XPOST --user admin:admin "${SONARQUBE_URL}/api/authentication/login?login=admin&password=admin"
 
 # Update admin password
 echo "Updating Admin Password for SonarQube"
