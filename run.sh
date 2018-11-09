@@ -29,7 +29,8 @@ echo "Updating Admin Password for SonarQube"
 pw_status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:admin  \
     "${SONARQUBE_URL}/api/users/change_password?login=admin&previousPassword=admin&password=${ADMIN_PASSWORD}")
 
-echo "Response Status: ${pw_status}\n"
+echo "Response Status: ${pw_status}"
+echo ""
 
 # Post settings 
 if [ -f ${SETTINGS_PROPERTIES_PATH} ];
