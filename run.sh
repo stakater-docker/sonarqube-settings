@@ -42,8 +42,7 @@ then
         IFS='=' read -ra keyValue <<< "${props[$i]}"
         key=${keyValue[0]}
         value=${keyValue[1]}
-        status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST --user admin:${ADMIN_PASSWORD} \
-            "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}")
+        status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}" --user admin:${ADMIN_PASSWORD})
         echo "Response Status: ${status}"
     done
 fi
