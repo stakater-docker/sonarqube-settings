@@ -66,4 +66,4 @@ then
 fi
 
 echo "Sleeping for Inifinity"
-sleep 
+sleep infinity
