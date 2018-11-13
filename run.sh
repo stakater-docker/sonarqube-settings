@@ -7,6 +7,14 @@ retries=${RETRY_LIMIT:-10};
 SONARQUBE_URL=${SONARQUBE_URL:-http://localhost:9000}
 SETTINGS_PROPERTIES_PATH=${SETTINGS_PROPERTIES_PATH:-"${HOME}/settings/settings.properties"}
 
+function postSetting() {
+    local key=$1
+    local value=$2
+    echo "Updating setting: '${key}'"
+    status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}" --user admin:${ADMIN_PASSWORD})
+    echo "Response Status: ${status}"
+}
+
 # Wait for SONARQUBE to start up
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head "${SONARQUBE_URL}/api/server/version"); do
     echo "Waiting for SonarQube to startup ..."
@@ -42,11 +50,20 @@ then
         IFS='=' read -ra keyValue <<< "${props[$i]}"
         key=${keyValue[0]}
         value=${keyValue[1]}
-        echo "Updating setting: '${key}'"
-        status=$(curl -s -o /dev/null -w "%{http_code}" -XPOST "${SONARQUBE_URL}/api/settings/set?key=${key}&value=${value}" --user admin:${ADMIN_PASSWORD})
-        echo "Response Status: ${status}"
+        postSetting ${key} ${value}
     done
 fi
 
+# Explicitly set OIDC props from env varaibles
+if [ ! -z "${OIDC_CLIENT_ID}" ];
+then 
+    postSetting "sonar.auth.oidc.clientId.secured" ${OIDC_CLIENT_ID}
+fi
+
+if [ ! -z "${OIDC_CLIENT_SECRET}" ];
+then 
+    postSetting "sonar.auth.oidc.clientSecret.secured" ${OIDC_CLIENT_SECRET}
+fi
+
 echo "Sleeping for Inifinity"
-sleep infinity
+sleep 

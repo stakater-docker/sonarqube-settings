@@ -12,6 +12,11 @@ Mount a directory containing settings.properties to /opt/app/settings.
 ```
 Alternatively you can mount the directory having properties file with any name on any path inside the container by updating the enviornment variable SETTINGS_PROPERIES_PATH. 
 
+### Sensitive Properties
+Secret properties such as passwords and secrets are set explicitly from Enviornment variables instead of the properties file. There details are mentioned in the section below.
+
+Currently supported : `ADMIN_PASSOWRD`, `OIDC_CLIENT_ID` & `OIDC_CLIENT_ID`
+
 ##Environment variables:
 
 `SONARQUBE_URL`: URL of SonarQube (default: `http://localhost:9000`)
@@ -22,6 +27,9 @@ Alternatively you can mount the directory having properties file with any name o
 
 `SETTINGS_PROPERTIES_PATH`: Path to the settings properties file from which properties are read and posted to sonarqube  (default: `${HOME}/settings/settings.properties`)
 
+`OIDC_CLIENT_ID`: Client ID for OpenID Connect
+
+`OIDC_CLIENT_SECRET`: Client Secret for OpenID Connect
 
 ## Example sonar.properties file
 
